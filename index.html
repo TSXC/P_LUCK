@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>设计师_蔡攀</title>
+    <style>
+        /* 自定义一些样式，用于体现历史厚重感和科技感 */
+        body {
+            background-color: #f8f8f8;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .header-bg {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .section-title {
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .work-item {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .work-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* 新增类，用于手机端左右预留空间 */
+        @media (max-width: 768px) {
+            .mobile-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        /* 修改后的二维码容器类，移除文字居中样式 */
+        .qr-code-container {
+            /* 移除 text-align: center; */
+        }
+
+        /* 新增类，用于让二维码文字靠左 */
+        .qr-code-text {
+            text-align: left;
+        }
+
+        /* 让二维码居中 */
+        .qr-code-img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 图片模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            /* 修改样式，让图片最大化显示 */
+            max-width: 95%;
+            max-height: 95%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+            }
+
+            to {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            z-index: 1001; /* 增大 z-index 值，确保显示在图片之上 */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="header-bg py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <!-- 这里可以替换为你的 logo 图标 -->
+                <img src="CP.ico" alt="Logo" class="w-10 h-10 mr-2">
+                <span class="text-xl font-bold">设计师_蔡攀</span>
+            </div>
+            <ul class="flex space-x-4">
+                <li><a href="#" class="hover:text-gray-300">首页</a></li>
+                <li><a href="#" class="hover:text-gray-300">作品</a></li>
+                <li><a href="#" class="hover:text-gray-300">关于</a></li>
+                <li><a href="#" class="hover:text-gray-300">联系</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 首页内容 -->
+    <section class="container mx-auto py-16">
+        <div class="flex flex-col md:flex-row items-center">
+            <!-- 个人照片 -->
+            <div class="md:w-1/2">
+                <img src="CP_ZP.png" alt="设计师照片" class="rounded-full w-64 h-64 mx-auto md:mx-0">
+            </div>
+            <div class="md:w-1/2 text-center md:text-left mt-8 md:mt-0">
+                <h1 class="text-4xl font-bold mb-4">蔡攀</h1>
+                <p class="text-lg text-gray-600">红色，渗透在每个人身心里的颜色，不能拒绝的颜色。专注于古典家具的设计与创新，将传统工艺与现代科技相结合，打造独具风格的优秀作品。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 作品 -->
+    <section class="container mx-auto py-16">
+        <h2 class="section-title">作品</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="work-grid">
+            <!-- 这里的图片会通过 JavaScript 动态添加 -->
+        </div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="container mx-auto py-16 mobile-padding">
+        <h2 class="section-title">关于</h2>
+        <p class="text-gray-600 leading-relaxed">我是一名热爱古典家具设计的设计师，拥有多年的设计经验。在设计过程中，我始终坚持将传统古典家具的工艺和文化内涵与现代的审美和功能需求相结合，致力于打造出既具有历史厚重感又符合时代潮流的家具作品。我注重每一个细节，追求卓越的品质，希望通过我的设计，让更多的人感受到古典家具的魅力。</p>
+    </section>
+
+    <!-- 联系 -->
+    <section class="container mx-auto py-16 mobile-padding">
+        <h2 class="section-title">联系</h2>
+        <p class="text-gray-600 mb-4">如果你对我的作品感兴趣，或者有任何设计需求，欢迎随时联系我。</p>
+        <div class="flex flex-col md:flex-row space-x-4 space-y-4 md:space-y-0">
+            <a href="https://space.bilibili.com/213041868?spm_id_from=333.1007.0.0" class="text-gray-600 hover:text-blue-500" target="_blank">
+                <i class="fa-brands fa-bilibili"></i> 欢迎 B 站小伙伴
+            </a>
+            <a href="#" class="text-gray-600 hover:text-blue-500"><i class="fa-solid fa-envelope"></i> Email: [592525758@qq.com]</a>
+            <a href="#" class="text-gray-600 hover:text-blue-500"><i class="fa-solid fa-phone"></i> Phone: [15250084932]</a>
+           
+            <div class="qr-code-container">
+                <p class="text-gray-600 mb-2 qr-code-text">微信二维码：</p>
+                <img src="CP_WX.png" alt="微信二维码" class="w-40 h-40 qr-code-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="header-bg py-4 text-center text-white">
+        <p>&copy; 2025 设计师_蔡攀. 保留所有权利.</p>
+    </footer>
+
+    <!-- 图片模态框 -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // 图片文件夹路径
+        const imageFolder = 'furniture images';
+
+        // 用于存储图片文件的数组，需要根据实际情况修改
+        const imageFiles = [
+            'furniture_01.jpg',
+            'furniture_02.jpg',
+            'furniture_03.jpg',
+            'furniture_04.jpg',
+            'furniture_05.jpg',
+            'furniture_06.jpg',
+            'furniture_07.jpg',
+            'furniture_08.jpg',
+            'furniture_09.jpg',
+            'furniture_10.jpg',
+            'furniture_11.jpg',
+            'furniture_12.jpg'
+            // 可以继续添加更多图片文件名
+        ];
+
+        // 获取作品网格容器
+        const workGrid = document.getElementById('work-grid');
+
+        // 获取模态框元素
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("img01");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        // 遍历图片文件数组
+        imageFiles.forEach(imageFile => {
+            // 创建作品项容器
+            const workItem = document.createElement('div');
+            workItem.className = 'work-item bg-white p-4 rounded shadow';
+
+            // 创建图片元素
+            const img = document.createElement('img');
+            img.src = `${imageFolder}/${imageFile}`;
+            img.alt = `作品`;
+            img.className = 'w-full h-auto mb-4';
+
+            // 为图片添加点击事件监听器
+            img.onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
+
+            // 将图片添加到作品项容器
+            workItem.appendChild(img);
+
+            // 将作品项容器添加到作品网格容器
+            workGrid.appendChild(workItem);
+        });
+
+        // 点击关闭按钮时关闭模态框
+        closeBtn.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // 点击模态框外的区域时关闭模态框
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>
