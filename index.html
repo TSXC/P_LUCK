@@ -224,8 +224,11 @@
         const modalImg = document.getElementById("img01");
         const closeBtn = document.getElementsByClassName("close")[0];
 
+        // 当前显示图片的索引
+        let currentIndex = 0;
+
         // 遍历图片文件数组
-        imageFiles.forEach(imageFile => {
+        imageFiles.forEach((imageFile, index) => {
             // 创建作品项容器
             const workItem = document.createElement('div');
             workItem.className = 'work-item bg-white p-4 rounded shadow';
@@ -238,6 +241,7 @@
 
             // 为图片添加点击事件监听器
             img.onclick = function () {
+                currentIndex = index;
                 modal.style.display = "block";
                 modalImg.src = this.src;
             }
@@ -260,6 +264,80 @@
                 modal.style.display = "none";
             }
         }
+
+        // 切换到上一张图片的函数
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + imageFiles.length) % imageFiles.length;
+            modalImg.src = `${imageFolder}/${imageFiles[currentIndex]}`;
+        }
+
+        // 切换到下一张图片的函数
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % imageFiles.length;
+            modalImg.src = `${imageFolder}/${imageFiles[currentIndex]}`;
+        }
+
+        // 添加键盘事件监听器
+        document.addEventListener('keydown', function (event) {
+            if (modal.style.display === "block") {
+                if (event.key === 'ArrowLeft') {
+                    prevImage();
+                } else if (event.key === 'ArrowRight') {
+                    nextImage();
+                }
+            }
+        });
+
+        // 在模态框中添加切换按钮
+        const prevButton = document.createElement('span');
+        prevButton.className = 'prev';
+        prevButton.innerHTML = '&#10094;';
+        prevButton.style.position = 'absolute';
+        prevButton.style.top = '50%';
+        prevButton.style.left = '10px';
+        prevButton.style.transform = 'translateY(-50%)';
+        prevButton.style.fontSize = '30px';
+        prevButton.style.color = 'white';
+        prevButton.style.cursor = 'pointer';
+        prevButton.onclick = prevImage;
+        modal.appendChild(prevButton);
+
+        const nextButton = document.createElement('span');
+        nextButton.className = 'next';
+        nextButton.innerHTML = '&#10095;';
+        nextButton.style.position = 'absolute';
+        nextButton.style.top = '50%';
+        nextButton.style.right = '10px';
+        nextButton.style.transform = 'translateY(-50%)';
+        nextButton.style.fontSize = '30px';
+        nextButton.style.color = 'white';
+        nextButton.style.cursor = 'pointer';
+        nextButton.onclick = nextImage;
+        modal.appendChild(nextButton);
+
+        // 触摸事件处理
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+        }
+
+        function handleTouchEnd(event) {
+            touchEndX = event.changedTouches[0].clientX;
+            if (modal.style.display === "block") {
+                if (touchEndX > touchStartX) {
+                    // 右滑，上一张
+                    prevImage();
+                } else if (touchEndX < touchStartX) {
+                    // 左滑，下一张
+                    nextImage();
+                }
+            }
+        }
+
+        modal.addEventListener('touchstart', handleTouchStart);
+        modal.addEventListener('touchend', handleTouchEnd);
     </script>
 </body>
 
